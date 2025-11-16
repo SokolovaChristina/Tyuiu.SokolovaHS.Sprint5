@@ -1,9 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-
-using System.IO;
-
 using Tyuiu.SokolovaHS.Sprint5.Task0.V30.Lib;
+using System.IO;
 
 namespace Tyuiu.SokolovaHS.Sprint5.Task0.V30.Test
 {
@@ -13,13 +10,13 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task0.V30.Test
         [TestMethod]
         public void CheckedExistsFile()
         {
-            string path = @"C:\Пользователи\Users\source\repos\Tyuiu.SokolovaHS.Sprint5.Task0.V30\bin\Debug\net.8.0\OutPutFileTask0.txt";
+            DataService ds = new DataService();
+            string path = ds.SaveToFileTextData(3); // Получаем путь из метода
 
-            FileInfo fileinfo = new FileInfo(path);
-            bool fileExists = fileinfo.Exists;
+            FileInfo fileInfo = new FileInfo(path);
+            bool fileExists = fileInfo.Exists;
             bool wait = true;
             Assert.AreEqual(wait, fileExists);
         }
-
     }
 }
