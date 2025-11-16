@@ -46,6 +46,8 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Lib
             cleaned = cleaned.Replace(" .", ".");
             cleaned = cleaned.Replace(" ?", "?");
             cleaned = cleaned.Replace(" !", "!");
+            cleaned = cleaned.Replace(" :", ":");
+            cleaned = cleaned.Replace(" ;", ";");
 
             return cleaned.Trim();
         }
