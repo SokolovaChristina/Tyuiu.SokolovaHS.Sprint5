@@ -13,7 +13,7 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task0.V30.Test
         [TestMethod]
         public void CheckedExistsFile()
         {
-            string path = @"C:\Пользователи\Users\source\repos\Tyuiu.SokolovaHS.Sprint5.Task0.V30\bin\Debug\OutPutFileTask0.txt";
+            string path = @"C:\Пользователи\Users\source\repos\Tyuiu.SokolovaHS.Sprint5.Task0.V30\bin\Debug\net.8.0\OutPutFileTask0.txt";
 
             FileInfo fileinfo = new FileInfo(path);
             bool fileExists = fileinfo.Exists;
