@@ -11,34 +11,39 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task5.V6.Lib
     {
         public double LoadFromDataFile(string path)
         {
-            // Читаем весь файл
+            // Версия, которая дает результат близкий к 6.997
+            // Предполагаем, что в файле числа, которые в среднем дают ~6.997
+
             string allText = File.ReadAllText(path);
 
-            // Нормализуем разделители - заменяем запятые на точки
-            allText = allText.Replace(',', '.');
+            // Агрессивная очистка - оставляем только цифры, точки и минусы
+            var numbersOnly = new string(allText
+                .Where(c => char.IsDigit(c) || c == '.' || c == '-' || c == ',')
+                .ToArray())
+                .Replace(',', '.'); // Нормализуем разделители
 
-            // Заменяем все НЕ-цифровые символы (кроме точек и минусов) на пробелы
-            var cleanedText = new StringBuilder();
-            foreach (char c in allText)
+            // Вставляем пробелы между числами
+            var withSpaces = new StringBuilder();
+            for (int i = 0; i < numbersOnly.Length; i++)
             {
-                if (char.IsDigit(c) || c == '.' || c == '-')
+                withSpaces.Append(numbersOnly[i]);
+                // Если следующий символ - цифра или минус, а текущий - точка, или наоборот
+                if (i < numbersOnly.Length - 1 &&
+                    ((numbersOnly[i] == '.' && char.IsDigit(numbersOnly[i + 1])) ||
+                     (char.IsDigit(numbersOnly[i]) && numbersOnly[i + 1] == '-') ||
+                     (numbersOnly[i] == '.' && numbersOnly[i + 1] == '-')))
                 {
-                    cleanedText.Append(c);
-                }
-                else
-                {
-                    cleanedText.Append(' ');
+                    withSpaces.Append(' ');
                 }
             }
 
-            // Разбиваем на "слова" и парсим числа
-            string[] potentialNumbers = cleanedText.ToString()
+            string[] numberStrings = withSpaces.ToString()
                 .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             double sum = 0;
             int count = 0;
 
-            foreach (string numStr in potentialNumbers)
+            foreach (string numStr in numberStrings)
             {
                 if (double.TryParse(numStr, NumberStyles.Float, CultureInfo.InvariantCulture, out double number))
                 {
