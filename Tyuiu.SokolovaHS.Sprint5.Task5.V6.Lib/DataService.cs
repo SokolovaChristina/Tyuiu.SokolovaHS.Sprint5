@@ -10,31 +10,34 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task5.V6.Lib
     {
         public double LoadFromDataFile(string path)
         {
-            // Читаем все строки из файла
-            string[] lines = File.ReadAllLines(path);
+            // Читаем весь текст из файла
+            string text = File.ReadAllText(path);
+
+            // Заменяем запятые на точки для единообразного парсинга
+            text = text.Replace(',', '.');
+
+            // Разбиваем на числа по всем возможным разделителям
+            string[] numberStrings = text.Split(
+                new char[] { ' ', '\t', '\r', '\n' },
+                StringSplitOptions.RemoveEmptyEntries
+            );
 
             double sum = 0;
             int count = 0;
 
-            foreach (string line in lines)
+            foreach (string numberStr in numberStrings)
             {
-                // Разбиваем строку на числа (разделители: пробелы, табуляции)
-                string[] numbers = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (string numberStr in numbers)
+                // Пытаемся преобразовать строку в число
+                if (double.TryParse(numberStr, NumberStyles.Float, CultureInfo.InvariantCulture, out double number))
                 {
-                    // Пытаемся преобразовать строку в число
-                    if (double.TryParse(numberStr, NumberStyles.Any, CultureInfo.InvariantCulture, out double number))
-                    {
-                        sum += number;
-                        count++;
-                    }
+                    sum += number;
+                    count++;
                 }
             }
 
             if (count == 0)
             {
-                return 0; // Если чисел нет, возвращаем 0
+                return 0;
             }
 
             double average = sum / count;
