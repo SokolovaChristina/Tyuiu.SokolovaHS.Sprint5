@@ -21,7 +21,7 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task1.V14.Lib
             return path;
         }
 
-        private double Calculate(double x)
+        public double Calculate(double x)
         {
             // Проверка деления на ноль
             if (Math.Abs(x + 1.7) < 0.0001)
