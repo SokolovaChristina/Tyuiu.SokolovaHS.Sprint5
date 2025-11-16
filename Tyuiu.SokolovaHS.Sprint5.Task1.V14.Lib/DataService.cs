@@ -15,7 +15,11 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task1.V14.Lib
                 for (int x = startValue; x <= stopValue; x++)
                 {
                     double value = Calculate(x);
-                    writer.WriteLine($"{value:F2}".Replace(".", ",")); // Форматирование с запятой
+                    // Убираем лишние нули через преобразование в строку и обратно
+                    string stringValue = value.ToString("F10").Replace(".", ",");
+                    stringValue = stringValue.TrimEnd('0').TrimEnd(',');
+
+                    writer.WriteLine(stringValue);
                 }
             }
             return path;
