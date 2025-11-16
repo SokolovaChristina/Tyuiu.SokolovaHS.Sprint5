@@ -28,16 +28,46 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Lib
                 if ((c >= 'а' && c <= 'я') || c == 'ё')
                     continue;
 
-                // Удаляем пробелы
-                if (c == ' ')
-                    continue;
-
-
-                // Оставляем все остальные символы
+                // Оставляем все остальные символы (включая пробелы)
                 result.Append(c);
             }
 
-            return result.ToString();
+            // Убираем лишние пробелы
+            string cleaned = result.ToString();
+
+            // Заменяем множественные пробелы на одинарные
+            while (cleaned.Contains("  "))
+            {
+                cleaned = cleaned.Replace("  ", " ");
+            }
+
+            // Убираем пробелы перед знаками препинания (кроме последней точки)
+            cleaned = cleaned.Replace(" ,", ",");
+            cleaned = cleaned.Replace(" ?", "?");
+            cleaned = cleaned.Replace(" !", "!");
+            cleaned = cleaned.Replace(" :", ":");
+            cleaned = cleaned.Replace(" ;", ";");
+
+            // Обрабатываем точки: убираем пробел перед всеми точками кроме последней
+            int lastDotIndex = cleaned.LastIndexOf('.');
+            if (lastDotIndex != -1)
+            {
+                // Обрабатываем все точки до последней
+                string beforeLastDot = cleaned.Substring(0, lastDotIndex);
+                beforeLastDot = beforeLastDot.Replace(" .", ".");
+
+                // Последнюю часть оставляем как есть (с пробелом перед точкой если есть)
+                string afterLastDot = cleaned.Substring(lastDotIndex);
+
+                cleaned = beforeLastDot + afterLastDot;
+            }
+            else
+            {
+                // Если точек нет, убираем все пробелы перед точками
+                cleaned = cleaned.Replace(" .", ".");
+            }
+
+            return cleaned.Trim();
         }
     }
 }
