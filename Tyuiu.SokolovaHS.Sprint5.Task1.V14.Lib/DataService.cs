@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using tyuiu.cources.programming.interfaces.Sprint5;
+
 namespace Tyuiu.SokolovaHS.Sprint5.Task1.V14.Lib
 {
     public class DataService : ISprint5Task1V14
@@ -11,11 +12,10 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task1.V14.Lib
 
             using (StreamWriter writer = new StreamWriter(path))
             {
-                writer.WriteLine("x\tf(x)");
                 for (int x = startValue; x <= stopValue; x++)
                 {
                     double value = Calculate(x);
-                    writer.WriteLine($"{x}\t{value}");
+                    writer.WriteLine($"{value:F2}".Replace(".", ",")); // Форматирование с запятой
                 }
             }
             return path;

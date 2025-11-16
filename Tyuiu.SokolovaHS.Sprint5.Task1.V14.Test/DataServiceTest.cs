@@ -25,49 +25,29 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task1.V14.Test
             DataService ds = new DataService();
             string path = ds.SaveToFileTextData(-5, 5);
 
-            string[] fileLines = File.ReadAllLines(path);
+            string fileContent = File.ReadAllText(path);
+            string expected = "-0,62\r\n-16,79\r\n-17,77\r\n-6,30\r\n-5,04\r\n-6,00\r\n-7,85\r\n-2,43\r\n5,91\r\n4,33\r\n-11,82\r\n";
 
-            Assert.IsTrue(fileLines.Length > 0);
-            Assert.AreEqual("x\tf(x)", fileLines[0]); // Проверка заголовка
-
-            // Проверка что файл содержит данные для всех x от -5 до 5
-            Assert.AreEqual(11, fileLines.Length); // заголовок + 11 строк данных
+            Assert.AreEqual(expected, fileContent);
         }
 
         [TestMethod]
         public void CheckedCalculateDivisionByZero()
         {
             DataService ds = new DataService();
-            string path = ds.SaveToFileTextData(-2, -1);
 
-            string[] fileLines = File.ReadAllLines(path);
-
-            // Проверяем что при x = -1.7 (округляется до -2) значение равно 0
-            bool foundZero = false;
-            foreach (string line in fileLines)
-            {
-                if (line.Contains("-2") && line.Contains("0"))
-                {
-                    foundZero = true;
-                    break;
-                }
-            }
-            Assert.IsTrue(foundZero);
+            // Проверяем вычисление при x = -1.7 (деление на ноль)
+            double result = ds.Calculate(-1.7);
+            Assert.AreEqual(0, result);
         }
 
         [TestMethod]
         public void CheckedCalculateNormalValue()
         {
             DataService ds = new DataService();
-            string path = ds.SaveToFileTextData(0, 0);
-
-            string[] fileLines = File.ReadAllLines(path);
-            string dataLine = fileLines[1]; // Первая строка с данными
-
-            string[] parts = dataLine.Split('\t');
-            double result = double.Parse(parts[1]);
 
             // Проверка вычисления для x = 0
+            double result = ds.Calculate(0);
             double expected = Math.Sin(0) / (0 + 1.7) - Math.Cos(0) * 4 * 0 - 6;
             expected = Math.Round(expected, 2);
 

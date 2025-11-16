@@ -53,6 +53,12 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task1.V14
                 Console.WriteLine($"| {x,6}  | {value,8:F2}  |");
             }
             Console.WriteLine("-------------------------");
+
+            // Вывод содержимого файла
+            Console.WriteLine("\nСодержимое файла:");
+            string fileContent = File.ReadAllText(res);
+            Console.WriteLine(fileContent);
+
             Console.ReadLine();
         }
 
