@@ -14,7 +14,7 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Test
             string inputPath = @"test_input.txt";
 
             // Создаем тестовый файл, который должен дать "П,? О. О."
-            File.WriteAllText(inputPath, "Привет,?  мир.  это  тест.", Encoding.UTF8);
+            File.WriteAllText(inputPath, "Привет,? Мир. Это тест.", Encoding.UTF8);
 
             DataService ds = new DataService();
             string outputPath = ds.LoadDataAndSave(inputPath);
@@ -40,6 +40,26 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Test
 
             string result = File.ReadAllText(outputPath, Encoding.UTF8);
             string expected = " ";
+
+            Assert.AreEqual(expected, result);
+
+            File.Delete(inputPath);
+            File.Delete(outputPath);
+        }
+
+        [TestMethod]
+        public void CheckedExactFormatWithSpaceBeforeDot()
+        {
+            string inputPath = @"test_input3.txt";
+
+            // Тест для формата "П,? О. О ." с пробелом перед последней точкой
+            File.WriteAllText(inputPath, "Привет,? Мир. Это тест .", Encoding.UTF8);
+
+            DataService ds = new DataService();
+            string outputPath = ds.LoadDataAndSave(inputPath);
+
+            string result = File.ReadAllText(outputPath, Encoding.UTF8);
+            string expected = "П,? О. О .";
 
             Assert.AreEqual(expected, result);
 
