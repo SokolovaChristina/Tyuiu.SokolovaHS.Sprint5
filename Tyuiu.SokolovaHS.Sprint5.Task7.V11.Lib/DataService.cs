@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using tyuiu.cources.programming.interfaces.Sprint5;
 
@@ -22,7 +21,7 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Lib
         public string ProcessText(string text)
         {
             StringBuilder result = new StringBuilder();
-            bool lastWasLetterOrSymbol = false;
+            bool lastWasNonSpace = false;
 
             foreach (char c in text)
             {
@@ -33,18 +32,19 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Lib
                 // Если это пробел
                 if (c == ' ')
                 {
-                    // Добавляем пробел только если перед ним был символ/буква
-                    if (lastWasLetterOrSymbol)
+                    // Добавляем пробел только если перед ним был не пробельный символ
+                    if (lastWasNonSpace)
                     {
-                        result.Append(c);
-                        lastWasLetterOrSymbol = false;
+                        result.Append(' ');
+                        lastWasNonSpace = false;
                     }
-                    continue;
                 }
-
-                // Все остальные символы оставляем
-                result.Append(c);
-                lastWasLetterOrSymbol = true;
+                else
+                {
+                    // Добавляем символ и отмечаем, что был не пробел
+                    result.Append(c);
+                    lastWasNonSpace = true;
+                }
             }
 
             // Убираем пробел в конце, если есть
