@@ -9,119 +9,59 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Test
     public class DataServiceTest
     {
         [TestMethod]
-        public void CheckedFileCreation()
+        public void CheckedExpectedResult()
         {
             string inputPath = @"test_input.txt";
 
-            // Создаем тестовый файл
-            File.WriteAllText(inputPath, "тест ТЕСТ 123", Encoding.UTF8);
+            // Создаем тестовый файл с ожидаемым результатом
+            File.WriteAllText(inputPath, "Привет,?  мир.  это  тест .", Encoding.UTF8);
 
             DataService ds = new DataService();
             string outputPath = ds.LoadDataAndSave(inputPath);
 
-            // Проверяем, что выходной файл создан
-            FileInfo fileInfo = new FileInfo(outputPath);
-            bool fileExists = fileInfo.Exists;
+            string result = File.ReadAllText(outputPath, Encoding.UTF8);
+            string expected = "П,? мир. это тест .";
 
-            Assert.IsTrue(fileExists);
+            Assert.AreEqual(expected, result);
 
-            // Удаляем тестовые файлы
             File.Delete(inputPath);
             File.Delete(outputPath);
         }
 
         [TestMethod]
-        public void CheckedTextProcessing()
+        public void CheckedSpacesPreservation()
         {
             string inputPath = @"test_input2.txt";
 
-            // Создаем тестовый файл с русскими буквами и пробелами
-            File.WriteAllText(inputPath, "Привет мир! Это ТЕСТ 123.", Encoding.UTF8);
+            File.WriteAllText(inputPath, "много     пробелов   здесь", Encoding.UTF8);
 
             DataService ds = new DataService();
             string outputPath = ds.LoadDataAndSave(inputPath);
 
-            // Читаем результат
             string result = File.ReadAllText(outputPath, Encoding.UTF8);
-
-            // Должно остаться: "!ТЕСТ123." (пробелы и строчные русские буквы удалены)
-            string expected = "!ТЕСТ123.";
+            string expected = " пробелов здесь";
 
             Assert.AreEqual(expected, result);
 
-            // Удаляем тестовые файлы
             File.Delete(inputPath);
             File.Delete(outputPath);
         }
 
         [TestMethod]
-        public void CheckedOnlySpacesAndLowercase()
+        public void CheckedLowercaseRemoval()
         {
             string inputPath = @"test_input3.txt";
 
-            // Создаем тестовый файл только с пробелами и строчными русскими буквами
-            File.WriteAllText(inputPath, "абвгдеёжзийклмнопрстуфхцчшщъыьэюя ", Encoding.UTF8);
+            File.WriteAllText(inputPath, "абв АБВ abc ABC", Encoding.UTF8);
 
             DataService ds = new DataService();
             string outputPath = ds.LoadDataAndSave(inputPath);
 
-            // Читаем результат
             string result = File.ReadAllText(outputPath, Encoding.UTF8);
-
-            // Должно остаться пустая строка
-            string expected = "";
+            string expected = " АБВ abc ABC";
 
             Assert.AreEqual(expected, result);
 
-            // Удаляем тестовые файлы
-            File.Delete(inputPath);
-            File.Delete(outputPath);
-        }
-
-        [TestMethod]
-        public void CheckedUppercaseAndSymbolsRemain()
-        {
-            string inputPath = @"test_input4.txt";
-
-            // Создаем тестовый файл с заглавными буквами, цифрами и символами
-            File.WriteAllText(inputPath, "АБВГД ABC 123 !@#$", Encoding.UTF8);
-
-            DataService ds = new DataService();
-            string outputPath = ds.LoadDataAndSave(inputPath);
-
-            // Читаем результат
-            string result = File.ReadAllText(outputPath, Encoding.UTF8);
-
-            // Должно остаться все, кроме пробелов: "АБВГДABC123!@#$"
-            string expected = "АБВГДABC123!@#$";
-
-            Assert.AreEqual(expected, result);
-
-            // Удаляем тестовые файлы
-            File.Delete(inputPath);
-            File.Delete(outputPath);
-        }
-
-        [TestMethod]
-        public void CheckedMixedContent()
-        {
-            string inputPath = @"test_input5.txt";
-
-            // Создаем тестовый файл со смешанным содержимым
-            File.WriteAllText(inputPath, "Строчная заглавная 123 test TEST", Encoding.UTF8);
-
-            DataService ds = new DataService();
-            string outputPath = ds.LoadDataAndSave(inputPath);
-
-            // Читаем результат
-            string result = File.ReadAllText(outputPath, Encoding.UTF8);
-
-            // Должно остаться: "123testTEST" (строчные русские удалены, английские остаются)
-            string expected = "123testTEST";
-
-            Assert.AreEqual(expected, result);
-
-            // Удаляем тестовые файлы
             File.Delete(inputPath);
             File.Delete(outputPath);
         }

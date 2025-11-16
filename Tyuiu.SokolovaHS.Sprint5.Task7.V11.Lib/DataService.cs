@@ -15,8 +15,8 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Lib
             // Читаем исходный файл
             string inputText = File.ReadAllText(path);
 
-            // Удаляем пробелы и строчные русские буквы
-            string resultText = RemoveSpacesAndLowercaseRussianLetters(inputText);
+            // Удаляем строчные русские буквы и множественные пробелы
+            string resultText = RemoveLowercaseRussianLettersAndMultipleSpaces(inputText);
 
             // Сохраняем результат в новый файл
             File.WriteAllText(outputPath, resultText, Encoding.UTF8);
@@ -24,15 +24,28 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Lib
             return outputPath;
         }
 
-        public string RemoveSpacesAndLowercaseRussianLetters(string text)
+        public string RemoveLowercaseRussianLettersAndMultipleSpaces(string text)
         {
             StringBuilder result = new StringBuilder();
+            bool lastWasSpace = false;
 
             foreach (char c in text)
             {
-                // Пропускаем пробелы
+                // Обрабатываем пробелы - оставляем только одиночные
                 if (c == ' ')
+                {
+                    if (!lastWasSpace)
+                    {
+                        result.Append(c);
+                        lastWasSpace = true;
+                    }
+                    // Пропускаем множественные пробелы
                     continue;
+                }
+                else
+                {
+                    lastWasSpace = false;
+                }
 
                 // Пропускаем строчные русские буквы
                 if (c >= 'а' && c <= 'я')
