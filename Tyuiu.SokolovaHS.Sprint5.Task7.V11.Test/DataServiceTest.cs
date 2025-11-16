@@ -13,14 +13,14 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Test
         {
             string inputPath = @"test_input.txt";
 
-            // Создаем тестовый файл, который должен дать "П,? О. О ."
+            // Создаем тестовый файл, который должен дать "П,?О.О."
             File.WriteAllText(inputPath, "Привет, ? мир. это тест .", Encoding.UTF8);
 
             DataService ds = new DataService();
             string outputPath = ds.LoadDataAndSave(inputPath);
 
             string result = File.ReadAllText(outputPath, Encoding.UTF8);
-            string expected = "П,? О. О .";
+            string expected = "П,?О.О.";
 
             Assert.AreEqual(expected, result);
 
@@ -29,7 +29,7 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Test
         }
 
         [TestMethod]
-        public void CheckedSpacesBetweenWords()
+        public void CheckedSpacesRemoved()
         {
             string inputPath = @"test_input2.txt";
 
@@ -39,7 +39,7 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Test
             string outputPath = ds.LoadDataAndSave(inputPath);
 
             string result = File.ReadAllText(outputPath, Encoding.UTF8);
-            string expected = " ";
+            string expected = "";
 
             Assert.AreEqual(expected, result);
 
