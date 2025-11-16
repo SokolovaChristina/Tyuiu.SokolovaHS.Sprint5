@@ -1,7 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using tyuiu.cources.programming.interfaces.Sprint5;
 
 namespace Tyuiu.SokolovaHS.Sprint5.Task5.V6.Lib
@@ -10,25 +11,36 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task5.V6.Lib
     {
         public double LoadFromDataFile(string path)
         {
-            // Читаем весь текст из файла
-            string text = File.ReadAllText(path);
+            // Читаем весь файл
+            string allText = File.ReadAllText(path);
 
-            // Заменяем запятые на точки для единообразного парсинга
-            text = text.Replace(',', '.');
+            // Нормализуем разделители - заменяем запятые на точки
+            allText = allText.Replace(',', '.');
 
-            // Разбиваем на числа по всем возможным разделителям
-            string[] numberStrings = text.Split(
-                new char[] { ' ', '\t', '\r', '\n' },
-                StringSplitOptions.RemoveEmptyEntries
-            );
+            // Заменяем все НЕ-цифровые символы (кроме точек и минусов) на пробелы
+            var cleanedText = new StringBuilder();
+            foreach (char c in allText)
+            {
+                if (char.IsDigit(c) || c == '.' || c == '-')
+                {
+                    cleanedText.Append(c);
+                }
+                else
+                {
+                    cleanedText.Append(' ');
+                }
+            }
+
+            // Разбиваем на "слова" и парсим числа
+            string[] potentialNumbers = cleanedText.ToString()
+                .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             double sum = 0;
             int count = 0;
 
-            foreach (string numberStr in numberStrings)
+            foreach (string numStr in potentialNumbers)
             {
-                // Пытаемся преобразовать строку в число
-                if (double.TryParse(numberStr, NumberStyles.Float, CultureInfo.InvariantCulture, out double number))
+                if (double.TryParse(numStr, NumberStyles.Float, CultureInfo.InvariantCulture, out double number))
                 {
                     sum += number;
                     count++;
@@ -36,9 +48,7 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task5.V6.Lib
             }
 
             if (count == 0)
-            {
                 return 0;
-            }
 
             double average = sum / count;
             return Math.Round(average, 3);
