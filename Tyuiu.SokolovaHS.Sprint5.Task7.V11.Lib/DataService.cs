@@ -24,9 +24,14 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Lib
 
             foreach (char c in text)
             {
-                // Удаляем строчные русские буквы и пробелы
-                if ((c >= 'а' && c <= 'я') || c == 'ё' || c == ' ')
+                // Удаляем строчные русские буквы
+                if ((c >= 'а' && c <= 'я') || c == 'ё')
                     continue;
+
+                // Удаляем пробелы
+                if (c == ' ')
+                    continue;
+
 
                 // Оставляем все остальные символы
                 result.Append(c);
