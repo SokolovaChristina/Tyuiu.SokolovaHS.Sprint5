@@ -22,22 +22,33 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Lib
         public string ProcessText(string text)
         {
             StringBuilder result = new StringBuilder();
+            bool lastWasLetterOrSymbol = false;
 
             foreach (char c in text)
             {
-                // Удаляем ВСЕ пробелы
-                if (c == ' ')
-                    continue;
-
                 // Удаляем строчные русские буквы
                 if ((c >= 'а' && c <= 'я') || c == 'ё')
                     continue;
 
+                // Если это пробел
+                if (c == ' ')
+                {
+                    // Добавляем пробел только если перед ним был символ/буква
+                    if (lastWasLetterOrSymbol)
+                    {
+                        result.Append(c);
+                        lastWasLetterOrSymbol = false;
+                    }
+                    continue;
+                }
+
                 // Все остальные символы оставляем
                 result.Append(c);
+                lastWasLetterOrSymbol = true;
             }
 
-            return result.ToString();
+            // Убираем пробел в конце, если есть
+            return result.ToString().Trim();
         }
     }
 }
