@@ -12,47 +12,25 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Lib
         {
             string outputPath = Path.Combine(Path.GetTempPath(), "OutPutDataFileTask7V11.txt");
 
-            // Читаем исходный файл
             string inputText = File.ReadAllText(path);
+            string resultText = ProcessText(inputText);
 
-            // Удаляем строчные русские буквы и множественные пробелы
-            string resultText = RemoveLowercaseRussianLettersAndMultipleSpaces(inputText);
-
-            // Сохраняем результат в новый файл
             File.WriteAllText(outputPath, resultText, Encoding.UTF8);
-
             return outputPath;
         }
 
-        public string RemoveLowercaseRussianLettersAndMultipleSpaces(string text)
+        public string ProcessText(string text)
         {
             StringBuilder result = new StringBuilder();
-            bool lastWasSpace = false;
 
             foreach (char c in text)
             {
-                // Обрабатываем пробелы - оставляем только одиночные
+                // Удаляем ВСЕ пробелы
                 if (c == ' ')
-                {
-                    if (!lastWasSpace)
-                    {
-                        result.Append(c);
-                        lastWasSpace = true;
-                    }
-                    // Пропускаем множественные пробелы
-                    continue;
-                }
-                else
-                {
-                    lastWasSpace = false;
-                }
-
-                // Пропускаем строчные русские буквы
-                if (c >= 'а' && c <= 'я')
                     continue;
 
-                // Пропускаем букву 'ё'
-                if (c == 'ё')
+                // Удаляем строчные русские буквы
+                if ((c >= 'а' && c <= 'я') || c == 'ё')
                     continue;
 
                 // Все остальные символы оставляем
