@@ -32,7 +32,7 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Lib
                 result.Append(c);
             }
 
-            // Убираем лишние пробелы
+            // Убираем лишние пробелы, но сохраняем структуру
             string cleaned = result.ToString();
 
             // Заменяем множественные пробелы на одинарные
@@ -41,13 +41,14 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task7.V11.Lib
                 cleaned = cleaned.Replace("  ", " ");
             }
 
-            // Убираем пробелы между знаками препинания и буквами
+            // Убираем пробелы только перед некоторыми знаками препинания, но оставляем перед точкой
             cleaned = cleaned.Replace(" ,", ",");
-            cleaned = cleaned.Replace(" .", ".");
             cleaned = cleaned.Replace(" ?", "?");
             cleaned = cleaned.Replace(" !", "!");
             cleaned = cleaned.Replace(" :", ":");
             cleaned = cleaned.Replace(" ;", ";");
+
+            // НЕ убираем пробел перед точкой, чтобы сохранить "О ."
 
             return cleaned.Trim();
         }
