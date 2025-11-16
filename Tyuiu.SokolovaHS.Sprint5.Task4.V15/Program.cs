@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Globalization;
 using Tyuiu.SokolovaHS.Sprint5.Task4.V15.Lib;
 
 namespace Tyuiu.SokolovaHS.Sprint5.Task4.V15
@@ -37,7 +38,7 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task4.V15
 
             // Читаем значение из файла
             string fileContent = File.ReadAllText(path);
-            Console.WriteLine("Данные из файла: " + fileContent);
+            Console.WriteLine("Данные из файла: '" + fileContent + "'");
 
             Console.WriteLine("***************************************************************************");
             Console.WriteLine("* РЕЗУЛЬТАТ:                                                              *");
@@ -46,7 +47,7 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task4.V15
             DataService ds = new DataService();
             double result = ds.LoadFromDataFile(path);
 
-            Console.WriteLine($"Результат: {result:F3}");
+            Console.WriteLine($"Результат: {result.ToString("F3", CultureInfo.InvariantCulture)}");
             Console.ReadLine();
         }
 
@@ -59,9 +60,9 @@ namespace Tyuiu.SokolovaHS.Sprint5.Task4.V15
                 Directory.CreateDirectory(directory);
             }
 
-            // Записываем тестовое значение в файл
-            File.WriteAllText(path, "2.5"); // Пример значения
-            Console.WriteLine("Создан тестовый файл со значением: 2.5");
+            // Записываем тестовое значение в файл с точкой
+            File.WriteAllText(path, "3.54");
+            Console.WriteLine("Создан тестовый файл со значением: 3.54");
         }
     }
 }
